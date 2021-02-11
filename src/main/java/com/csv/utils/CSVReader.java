@@ -22,8 +22,8 @@ import com.csv.entity.ServiceRelationship;
 import com.csv.entity.ServiceRelationshipPK;
 
 public class CSVReader {
-  public static String TYPE = "text/csv";
-  static String[] HEADERs = { "Id", "Title", "Description", "Published" };
+  public static String TYPE = "application/vnd.ms-excel";
+  static String[] HEADERs = {"parent", "child", "impact", "label"};
 
   public static boolean hasCSVFormat(MultipartFile file) {
 
