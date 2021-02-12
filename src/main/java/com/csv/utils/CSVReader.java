@@ -23,7 +23,7 @@ import com.csv.entity.ServiceRelationshipPK;
 
 public class CSVReader {
   public static String TYPE = "application/vnd.ms-excel";
-  static String[] HEADERs = {"parent", "child", "impact", "label"};
+  private static List<String> HEADERs = Arrays.asList("parent", "child","label", "impact");
 
   public static boolean hasCSVFormat(MultipartFile file) {
 
@@ -34,11 +34,18 @@ public class CSVReader {
     return true;
   }
 
+
+
   public static List<ServiceRelationship> csvToObject(InputStream is) {
     try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
         CSVParser csvParser = new CSVParser(fileReader,
             CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
-
+        List<String> header = csvParser.getHeaderNames();
+        for(int i =0 ; i<header.size();i++){
+            if(!header.get(i).equalsIgnoreCase(HEADERs.get(i))){
+                throw new RuntimeException("Invalid format of CVS");
+            }
+        }
       List<CSVRecord> csvRecords = csvParser.getRecords();
       List<ServiceRelationship> ServiceRelationship = csvRecords.stream().map(
     		  c ->  new ServiceRelationship(new ServiceRelationshipPK(c.get("parent"), c.get("child")), new BigDecimal(c.get("impact")), c.get("label")))

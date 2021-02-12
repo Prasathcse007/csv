@@ -57,7 +57,7 @@ public class ServiceRelationShipController {
 
     if (CSVReader.hasCSVFormat(file)) {
       try {
-        fileService.save(file);
+        fileService.update(file);
 
         message = "Uploaded the file successfully: " + file.getOriginalFilename();
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
